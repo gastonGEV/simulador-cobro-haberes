@@ -14,7 +14,9 @@ var koModel = {
   calcHaber: function() {
     let date = moment().format('DD/MM/YYYY HH:mm');
     if (koModel.inputSueldo().length > 0){
-      let sueldo = parseFloat(koModel.inputSueldo());
+      let sueldo = parseFloat(koModel.inputSueldo()).toFixed(2);
+      console.clear();
+      console.log(sueldo);
       let jubi = sueldo * jubilacion;
       let obraSoc = sueldo * obraSocial;
       let cuotaSin = sueldo * cuotaSindical;
@@ -33,8 +35,10 @@ var koModel = {
       }
 
       let total = sueldo + presente + anti + asig;
+      total = parseFloat(total).toFixed(2);
       let deduc = jubi + obraSoc + cuotaSin;
       let totalNeto = total - deduc;
+      totalNeto = parseFloat(totalNeto).toFixed(2);
 
       koModel.arrayInfo([
         { detalle: 'SUELDO', haberes: sueldo, deducciones: ''},
@@ -58,6 +62,7 @@ var koModel = {
 
 function antiguedad(anos) {
   let anti;
+  
   switch (true) {
     case (anos >= 1 && anos < 5):
       anti = 114;

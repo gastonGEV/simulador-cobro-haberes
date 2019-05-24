@@ -34,20 +34,20 @@
           <div class="input-group-prepend">
             <span class="input-group-text">$</span>
           </div>
-          <input type="text" class="form-control" placeholder="Ingrese Sueldo basico" autocomplete="off" data-bind="textInput: inputSueldo, event: { keyup: koModel.calcHaber }"> 
+          <input type="text" id="inputSueldo" class="form-control" placeholder="Ingrese Sueldo basico" autocomplete="off" data-bind="textInput: inputSueldo, event: { keyup: koModel.calcHaber }"> 
         </div>
         <a href="https://www.huesped.org.ar/noticias/vasectomia-que-es-y-como-funciona/" target="_blank" data-bind="visible: inputHijos() > 5">Hacete una vasectomia!</a>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Hijos</span>
           </div>
-          <input type="text" class="form-control" placeholder="Ingrese Cantidad de hijos" autocomplete="off" data-bind="textInput: inputHijos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
+          <input type="text" id="inputHijos" class="form-control" placeholder="Ingrese Cantidad de hijos" autocomplete="off" data-bind="textInput: inputHijos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Antigüedad</span>
           </div>
-          <input type="text" class="form-control" placeholder="Ingrese antigüedad (años)" autocomplete="off" data-bind="textInput: inputAnos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
+          <input type="text" id="inputAnos" class="form-control" placeholder="Ingrese antigüedad (años)" autocomplete="off" data-bind="textInput: inputAnos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
         </div>
           
       </div>
@@ -92,9 +92,21 @@
   </div>
 
   <script src="main.js"></script>
+  <script src="vanilla-masker.min.js"></script>
 
   <script>
     ko.applyBindings(koModel, document.querySelector('#container'));
+
+      VMasker(document.querySelector('#inputSueldo')).maskNumber({
+        // Decimal precision -> "90"
+        precision: 2,
+        // Decimal separator -> ",90"
+        // separator: ',',
+        // // Number delimiter -> "12.345.678"
+        // delimiter: '.',
+      });
+      VMasker(document.querySelector('#inputHijos')).maskNumber();
+      VMasker(document.querySelector('#inputAnos')).maskNumber();
   </script>
 </body>
 </html>
