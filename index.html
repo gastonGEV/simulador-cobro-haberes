@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!--jquery-->
+  <script src="jquery-3.4.1.min.js"></script>
+  <!--moment-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+  <!--bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!--knockout JS (anterior a reactjs)-->
+  <script type='text/javascript' src='knockout-3.5.0.js'></script>
+</head>
+<body>
+
+  <!-- Image and text -->
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top"
+        alt="">
+      Simulador cobro haberes
+    </a>
+  </nav>
+  <div id="container" class="container" style="margin-top: 10px;">
+    <div class="row">
+      <div class="col-4">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Ingrese Sueldo basico" autocomplete="off" data-bind="textInput: inputSueldo, event: { keyup: koModel.calcHaber }"> 
+        </div>
+        <a href="https://www.huesped.org.ar/noticias/vasectomia-que-es-y-como-funciona/" target="_blank" data-bind="visible: inputHijos() > 5">Hacete una vasectomia!</a>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Hijos</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Ingrese Cantidad de hijos" autocomplete="off" data-bind="textInput: inputHijos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Antigüedad</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Ingrese antigüedad (años)" autocomplete="off" data-bind="textInput: inputAnos, event: { keyup: koModel.calcHaber }, disable: inputSueldo().length == 0">
+        </div>
+          
+      </div>
+      <div class="col-8">
+        
+        <table class="table table-bordered" data-bind="visible: arrayInfo().length > 0">
+          <thead class="">
+            <tr>
+              <th scope="col">Detalle</th>
+              <th scope="col">Haberes</th>
+              <th scope="col">Deducciones</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: arrayInfo">
+            <tr>
+              <td data-bind="text: detalle"></td>
+              <td data-bind="text: haberes"></td>
+              <td data-bind="text: deducciones"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered" data-bind="visible: arrayTotal().length > 0">
+          <thead class="">
+            <tr>
+              <th scope="col">Fecha de la Simulación</th>
+              <th scope="col">Total remun.</th>
+              <th scope="col">Deducciones</th>
+              <th scope="col">Total neto</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: arrayTotal">
+            <tr>
+              <th scope="row" data-bind="text: fecha"></th>
+              <td data-bind="text: total"></td>
+              <td data-bind="text: deducciones"></td>
+              <th data-bind="text: totalNeto"></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+
+  <script>
+    ko.applyBindings(koModel, document.querySelector('#container'));
+  </script>
+</body>
+</html>
