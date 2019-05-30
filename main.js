@@ -16,8 +16,6 @@ var koModel = {
     if (inputSueldoMask.unmaskedValue > 0){
       //sueldo
       let sueldo = parseFloat(inputSueldoMask.unmaskedValue);
-      console.clear();
-      console.log(sueldo);
 
       let jubi = sueldo * jubilacion;
       let obraSoc = sueldo * obraSocial;
