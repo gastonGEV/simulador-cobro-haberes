@@ -11,41 +11,55 @@ var koModel = {
   arrayInfo: ko.observableArray(),
   arrayTotal: ko.observableArray(),
 
-  calcHaber: function() {
+  calcHaber: () => {
     let date = moment().format('DD/MM/YYYY HH:mm');
-    if (koModel.inputSueldo().length > 0){
-      let sueldo = parseFloat(koModel.inputSueldo()).toFixed(2);
+    if (inputSueldoMask.unmaskedValue > 0){
+      //sueldo
+      let sueldo = parseFloat(inputSueldoMask.unmaskedValue);
       console.clear();
       console.log(sueldo);
+
       let jubi = sueldo * jubilacion;
       let obraSoc = sueldo * obraSocial;
       let cuotaSin = sueldo * cuotaSindical;
       let presente = sueldo * presentismo;
 
+      //antiguedad
       let anti = 40;
-      if (koModel.inputAnos().length > 0 && koModel.inputAnos() > 0) {
-        let anos = parseInt(koModel.inputAnos());
+      if (inputAnosMask.unmaskedValue > 0 > 0) {
+        let anos = parseInt(inputAnosMask.unmaskedValue);
         anti = antiguedad(anos);
       }
       
+      //asignacion
       let asig = 0;
-      if (koModel.inputHijos().length > 0 && koModel.inputHijos() > 0) {
+      if (inputHijosMask.unmaskedValue > 0) {
         asig = asignacion(sueldo);
-        asig = asig * parseInt(koModel.inputHijos());
+        asig = asig * parseInt(inputHijosMask.unmaskedValue);
       }
 
       let total = sueldo + presente + anti + asig;
-      total = parseFloat(total).toFixed(2);
       let deduc = jubi + obraSoc + cuotaSin;
       let totalNeto = total - deduc;
-      totalNeto = parseFloat(totalNeto).toFixed(2);
+
+      //formateo
+      sueldo = currencyFormat(sueldo);
+      jubi = currencyFormat(jubi);
+      obraSoc = currencyFormat(obraSoc);
+      cuotaSin = currencyFormat(cuotaSin);
+      presente = currencyFormat(presente);
+      anti = currencyFormat(anti);
+      asig = currencyFormat(asig);
+      deduc = currencyFormat(deduc);
+      total = currencyFormat(total);
+      totalNeto = currencyFormat(totalNeto);
 
       koModel.arrayInfo([
         { detalle: 'SUELDO', haberes: sueldo, deducciones: ''},
         { detalle: 'JUBILACIÓN', haberes: '', deducciones: `-${jubi}`},
         { detalle: 'OBRA SOCIAL', haberes: '', deducciones: `-${obraSoc}`},
         { detalle: 'CUOTA SINDICAL', haberes: '', deducciones: `-${cuotaSin}`},
-        { detalle: 'ANTIGUEDAD', haberes: anti, deducciones: ''},
+        { detalle: 'ANTIGÜEDAD', haberes: anti, deducciones: ''},
         { detalle: 'ASIGNACIÓN', haberes: asig, deducciones: ''},
         { detalle: 'PRESENTISMO', haberes: presente, deducciones: ''},
       ])
@@ -60,7 +74,7 @@ var koModel = {
   }
 }
 
-function antiguedad(anos) {
+const antiguedad = (anos) => {
   let anti;
   
   switch (true) {
@@ -86,11 +100,10 @@ function antiguedad(anos) {
       anti = 300;
       break;
   }
-
   return anti;
 }
 
-function asignacion(sueldo) {
+const asignacion = (sueldo) => {
   let asig;
 
   switch (true) {
@@ -106,13 +119,18 @@ function asignacion(sueldo) {
     case (sueldo >= 53000 && sueldo < 110000):
       asig = 400;
       break;
-
     default:
       asig = 0;
       break;
   }
-
-  console.log(asig);
-
   return asig;
+}
+
+const currencyFormat = (num) => {
+  return (
+    num
+      .toFixed(2)
+      .replace('.', ',')
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+  ) 
 }
