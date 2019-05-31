@@ -24,7 +24,7 @@ var koModel = {
 
       //antiguedad
       let anti = 40;
-      if (inputAnosMask.unmaskedValue > 0 > 0) {
+      if (inputAnosMask.unmaskedValue > 0) {
         let anos = parseInt(inputAnosMask.unmaskedValue);
         anti = antiguedad(anos);
       }
